@@ -165,7 +165,7 @@ function processSVData(data, status)
 			
 			var isCorrectCountry = false;
 			
-			for (iResult = 0; iResult < results.length; iResult++) {		
+			for (let iResult = 0; iResult < results.length; iResult++) {		
 				if(results[iResult].address_components[0].types[0].includes("country")) {
 					if(results[iResult].address_components[0].short_name == "DE") {
 						isCorrectCountry = true;
