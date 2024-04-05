@@ -18,7 +18,7 @@ Version:
 */
 
 var startTime, path, panorama, startLoc, currentLatLong, tempControlUI, mapClickListener, secondsGameDuration, gameDurationText;
-let map, guessMarker, targetMarker, targetPath, replyText;
+let map, guessMarker, targetMarker, targetPath, replyText, xmlRegions;
 var hasSubmitted = Boolean(false);
 var pointsAchieved = +0;
 var distanceToTarget;
@@ -26,93 +26,107 @@ var maxPoints = 1000;
 
 const zeroPosition = { lat: 0, lng: 0 };
 
+var xmlString = '<?xml version="1.0" encoding="UTF-8" ?><regions><region name="Austria"><shortCountryNames><Austria>AT</Austria></shortCountryNames><mapCenter><lat>47.50980551122986</lat><lng>13.169714878983603</lng></mapCenter><mapZoom>5</mapZoom><rectangleBounds><north>49.036864010687246</north><east>17.215430682700493</east><south>46.34766220473346</south><west>9.506080096763027</west></rectangleBounds></region><region name="Germany"><shortCountryNames><Germany>DE</Germany></shortCountryNames><mapCenter><lat>50.71909267478724</lat><lng>10.73075002222777</lng></mapCenter><mapZoom>4</mapZoom><rectangleBounds><north>54.92626188567992</north><east>15.075843280356741</east><south>47.25199367794615</south><west>5.858619159263028</west></rectangleBounds></region></regions>';
+
 
 async function initPano() {
-  const { Map } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
-  const { Geometry } = await google.maps.importLibrary("geometry");
-
-    
-  newSpot();
-  
-  //Create map for guessing
-  map = new Map(document.getElementById("map"), {
-  	center: zeroPosition,
-    zoom: 1,
-    mapTypeControlOptions: {
-    	mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain']
-    },
-    disableDefaultUI: true,
-	mapId: "f0133ed91e943e1c",
-	draggableCursor: 'default',
-  });
-  
-  
-  //Create StreetView panorama
-  panorama = new google.maps.StreetViewPanorama(
-    document.getElementById("pano"),
-    {
-      position: zeroPosition,
-      addressControl: false, //address box (top left corner of panorama)
-      linksControl: true, //arrows for navigation
-      panControl: true, //compass
-      enableCloseButton: false, //button (left arrow in top left corner of panorama) for going back
-      disableDefaultUI: false,
-    },
-  );
-    
-    
-  //Create "New Game" control button in top right corner of panorama
-  var newGameControlDiv = document.createElement("div");
-  tempControlUI = createControl(newGameControlDiv, "Starts a New Game Session", "New Game", "5px", "25px");
-  tempControlUI.addEventListener("click", () => {
+	const { Map } = await google.maps.importLibrary("maps");
+	const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+	const { Geometry } = await google.maps.importLibrary("geometry");
+	
+	
+	//Load regions XML file
+	let parser = new DOMParser();
+	xmlRegions = parser.parseFromString(xmlString, "application/xml");
+	
+	//Add isSelected = "" as attribute to each region element
+	for (let iCount = 0; iCount < xmlRegions.getElementsByTagName("region").length; iCount++) {
+		xmlRegions.getElementsByTagName("region")[iCount].setAttribute("isSelected", "");
+	}
+	
+	//For testing: Select regions "Germany" + "Austria"
+	xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
+	xmlRegions.getElementsByTagName("region")[0].setAttribute("isSelected", "Yes");
+	
+	newSpot();
+	
+	//Create map for guessing
+	map = new Map(document.getElementById("map"), {
+  		center: zeroPosition,
+    	zoom: 1,
+    	mapTypeControlOptions: {
+    		mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain']
+    	},
+    	disableDefaultUI: true,
+		mapId: "f0133ed91e943e1c",
+		draggableCursor: 'default',
+  	});
+	
+	
+	//Create StreetView panorama
+	panorama = new google.maps.StreetViewPanorama(
+		document.getElementById("pano"),
+    	{
+      	position: zeroPosition,
+      	addressControl: false, //address box (top left corner of panorama)
+      	linksControl: true, //arrows for navigation
+      	panControl: true, //compass
+      	enableCloseButton: false, //button (left arrow in top left corner of panorama) for going back
+      	disableDefaultUI: false,
+    	},
+	);
+	
+	
+	//Create "New Game" control button in top right corner of panorama
+	var newGameControlDiv = document.createElement("div");
+	tempControlUI = createControl(newGameControlDiv, "Starts a New Game Session", "New Game", "5px", "25px");
+	tempControlUI.addEventListener("click", () => {
   		newSpot();
-  });
-  panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(newGameControlDiv);
-  
-  //
-  //Create "Submit" control button in top left corner of map
-  var submitControlDiv = document.createElement("div");
-  tempControlUI = createControl(submitControlDiv, "Submit", "Submit", "3px", "16px");
-  tempControlUI.addEventListener("click", () => {
+	});
+	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(newGameControlDiv);
+	
+	//
+	//Create "Submit" control button in top left corner of map
+	var submitControlDiv = document.createElement("div");
+	tempControlUI = createControl(submitControlDiv, "Submit", "Submit", "3px", "16px");
+	tempControlUI.addEventListener("click", () => {
   		submitGuess();
-  });
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitControlDiv);
-  
-      
-  map.setStreetView(panorama);
-  
-  
-  //Create PinElement for guessMarker
-  const pinGuessMarker = new PinElement({
-  	scale: 0.7,
-	background: "#1A3CD5",
-	borderColor: "black",
-	glyphColor: "black",
-  });
+	});
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitControlDiv);
+	
+	
+	map.setStreetView(panorama);
+	
+	
+	//Create PinElement for guessMarker
+	const pinGuessMarker = new PinElement({
+  		scale: 0.7,
+		background: "#1A3CD5",
+		borderColor: "black",
+		glyphColor: "black",
+  	});
     
-  //Create marker for guessing
-  guessMarker = new AdvancedMarkerElement({
-    map: map,
-    position: { lat: 0, lng: 0 },
-	title: "My guess",
-	content: pinGuessMarker.element,
-  });
-  
-  /*
-  //legacy marker (old version)
-  guessMarker = new google.maps.Marker ({
-  	map: map,
-	position: {lat: 0, lng: 0},
-	title: "My guess",
-  });
-  */
-  
-  mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
-  	moveMarker(event.latLng);
-  });
-  
-  
+	//Create marker for guessing
+	guessMarker = new AdvancedMarkerElement({
+    	map: map,
+    	position: { lat: 0, lng: 0 },
+		title: "My guess",
+		content: pinGuessMarker.element,
+  	});
+	
+	/*
+	//legacy marker (old version)
+	guessMarker = new google.maps.Marker ({
+  		map: map,
+		position: {lat: 0, lng: 0},
+		title: "My guess",
+  	});
+  	*/
+	
+	mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
+  		moveMarker(event.latLng);
+	});
+	
 }
 
 
@@ -124,6 +138,9 @@ async function newSpot()
 {
 	const { Map } = await google.maps.importLibrary("maps");
 	
+	let northernBound, easternBound, southernBound, westernBound;
+	let randomLat, randomLng;
+	
 	startTime = new Date().getTime();
     try {
 		//Reset targetMarker + targetPath, i.e. hide them from map
@@ -134,18 +151,46 @@ async function newSpot()
     }
     catch(err) {}
     finally {
-        var northernBound = 54.92626188567992;
-		var easternBound = 15.075843280356741;
-		var southernBound = 47.25199367794615;
-		var westernBound = 5.858619159263028;
+        //Calculate number of selected regions
+		var numRegionsSelected = xmlRegions.querySelectorAll('region[isSelected=Yes]').length;
+		//console.log(numRegionsSelected);
 		
-		var randomLatInsideRect = getRandomLatBetween(southernBound, northernBound);
-		var randomLngInsideRect = getRandomLngBetween(westernBound, easternBound);
 		
+		
+		if (numRegionsSelected > 0) {
+			//Randomly choose one of the selected regions
+			var randomRegion = Math.floor(Math.random() * ((numRegionsSelected - 1) + 1))
+			//console.log(randomRegion);
+			
+			//Get rectangle bounds from chosen region
+			northernBound = parseFloat(xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.getElementsByTagName("north")[0].textContent);
+			easternBound = parseFloat(xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.getElementsByTagName("east")[0].textContent);
+			southernBound = parseFloat(xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.getElementsByTagName("south")[0].textContent);
+			westernBound = parseFloat(xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.getElementsByTagName("west")[0].textContent);
+			
+			/*
+			console.log(northernBound);
+			console.log(easternBound);
+			console.log(southernBound);
+			console.log(westernBound);
+			*/
+			
+			randomLat = getRandomLatBetween(southernBound, northernBound);
+			randomLng = getRandomLngBetween(westernBound, easternBound);
+		} else { //Generate worldwide random location
+			randomLat = getRandomLatLng(90);
+			randomLng = getRandomLatLng(180);
+		}
+				
+				
 		//console.log(randomLatInsideRect + ', ' + randomLngInsideRect);
 		
 		var sv = new google.maps.StreetViewService();
-        sv.getPanorama({location: {lat: randomLatInsideRect, lng: randomLngInsideRect}, preference: 'best', radius: 1000, source: 'outdoor'}, processSVData);
+        sv.getPanorama({location: {lat: randomLat, lng: randomLng}, preference: 'best', radius: 1000, source: 'outdoor'}, processSVData);
         
 		//Set hasSubmitted = false to verify that the Submit button has not been clicked during current game instance
 		hasSubmitted = false;
