@@ -17,8 +17,12 @@ Version:
 
 */
 
-var startTime, path, panorama, startLoc, currentLatLong, tempControlUI, mapClickListener, secondsGameDuration, gameDurationText;
+var startTime, path, panorama, startLoc, currentLatLong, 
+	tempControlUI, mapClickListener, secondsGameDuration, gameDurationText;
 let map, guessMarker, targetMarker, targetPath, replyText, xmlRegions;
+var panoServiceRadius = 100000;
+var currentCountry = "";
+var currentRegion = "";
 var hasSubmitted = Boolean(false);
 var pointsAchieved = +0;
 var distanceToTarget;
@@ -26,7 +30,7 @@ var maxPoints = 1000;
 
 const zeroPosition = { lat: 0, lng: 0 };
 
-var xmlString = '<?xml version="1.0" encoding="UTF-8" ?><regions><region name="Austria"><shortCountryNames><Austria>AT</Austria></shortCountryNames><mapCenter><lat>47.50980551122986</lat><lng>13.169714878983603</lng></mapCenter><mapZoom>5</mapZoom><rectangleBounds><north>49.036864010687246</north><east>17.215430682700493</east><south>46.34766220473346</south><west>9.506080096763027</west></rectangleBounds></region><region name="Germany"><shortCountryNames><Germany>DE</Germany></shortCountryNames><mapCenter><lat>50.71909267478724</lat><lng>10.73075002222777</lng></mapCenter><mapZoom>4</mapZoom><rectangleBounds><north>54.92626188567992</north><east>15.075843280356741</east><south>47.25199367794615</south><west>5.858619159263028</west></rectangleBounds></region></regions>';
+var xmlString = '<?xml version="1.0" encoding="UTF-8" ?><regions><region name="Austria"><shortCountryNames><Austria>AT</Austria></shortCountryNames><mapCenter><lat>47.50980551122986</lat><lng>13.169714878983603</lng></mapCenter><mapZoom>4</mapZoom><rectangleBounds><north>49.036864010687246</north><east>17.215430682700493</east><south>46.34766220473346</south><west>9.506080096763027</west></rectangleBounds></region><region name="Germany"><shortCountryNames><Germany>DE</Germany></shortCountryNames><mapCenter><lat>50.71909267478724</lat><lng>10.73075002222777</lng></mapCenter><mapZoom>4</mapZoom><rectangleBounds><north>54.92626188567992</north><east>15.075843280356741</east><south>47.25199367794615</south><west>5.858619159263028</west></rectangleBounds></region></regions>';
 
 
 async function initPano() {
@@ -45,8 +49,8 @@ async function initPano() {
 	}
 	
 	//For testing: Select regions "Germany" + "Austria"
-	xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
-	xmlRegions.getElementsByTagName("region")[0].setAttribute("isSelected", "Yes");
+	//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
+	//xmlRegions.getElementsByTagName("region")[0].setAttribute("isSelected", "Yes");
 	
 	newSpot();
 	
@@ -159,8 +163,14 @@ async function newSpot()
 		
 		if (numRegionsSelected > 0) {
 			//Randomly choose one of the selected regions
-			var randomRegion = Math.floor(Math.random() * ((numRegionsSelected - 1) + 1))
+			var randomRegion = Math.floor(Math.random() * ((numRegionsSelected - 1) + 1));
 			//console.log(randomRegion);
+			
+			//Randomly choose one of the countries in the chosen region
+			var numberOfCountries = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.querySelector("shortCountryNames").childElementCount;
+			var randomCountry = Math.floor(Math.random() * ((numberOfCountries - 1) + 1));
+			//console.log(randomCountry);
 			
 			//Get rectangle bounds from chosen region
 			northernBound = parseFloat(xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
@@ -181,16 +191,36 @@ async function newSpot()
 			
 			randomLat = getRandomLatBetween(southernBound, northernBound);
 			randomLng = getRandomLngBetween(westernBound, easternBound);
+			
+			//Set currentCountry to short_name of randomly chosen country
+			currentCountry = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.querySelector("shortCountryNames").children[randomCountry].textContent;
+			//console.log(currentCountry);
+			
+			//Set currentRegion to name attribute of randomly chosen region
+			currentRegion = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
+				.getAttribute("name");
+			//console.log(currentRegion);
+			
+			//Set radius for StreetView Service to 3000 m
+			panoServiceRadius = 3000;
 		} else { //Generate worldwide random location
 			randomLat = getRandomLatLng(90);
 			randomLng = getRandomLatLng(180);
+			
+			//Set currentCountry and currentRegion to empty string
+			currentCountry = "";
+			currentRegion = "";
+			
+			//Set radius for StreetView Service to 100000 m = 100 km
+			panoServiceRadius = 100000;
 		}
 				
 				
 		//console.log(randomLatInsideRect + ', ' + randomLngInsideRect);
 		
 		var sv = new google.maps.StreetViewService();
-        sv.getPanorama({location: {lat: randomLat, lng: randomLng}, preference: 'best', radius: 1000, source: 'outdoor'}, processSVData);
+        sv.getPanorama({location: {lat: randomLat, lng: randomLng}, preference: 'best', radius: panoServiceRadius, source: 'outdoor'}, processSVData);
         
 		//Set hasSubmitted = false to verify that the Submit button has not been clicked during current game instance
 		hasSubmitted = false;
@@ -202,48 +232,74 @@ function processSVData(data, status)
     if (status === 'OK') {
         var geocoder = new google.maps.Geocoder();
 		
-		//Reverse geocoding request to retrieve country information for chosen panorama location
-		geocoder
-		.geocode({ location: data.location.latLng })
-		.then((result) => {
-			const { results } = result;
-			
-			var isCorrectCountry = false;
-			
-			for (let iResult = 0; iResult < results.length; iResult++) {		
-				if(results[iResult].address_components[0].types[0].includes("country")) {
-					if(results[iResult].address_components[0].short_name == "DE") {
-						isCorrectCountry = true;
+		if(currentRegion.length > 0) {
+			//Reverse geocoding request to retrieve country information for chosen panorama location
+			geocoder
+			.geocode({ location: data.location.latLng })
+			.then((result) => {
+				const { results } = result;
+				
+				var isCorrectCountry = false;
+				
+				for (let iResult = 0; iResult < results.length; iResult++) {		
+					if(results[iResult].address_components[0].types[0].includes("country")) {
+						if(results[iResult].address_components[0].short_name == currentCountry) {
+							isCorrectCountry = true;
+						}
 					}
 				}
-			}
+				
+				if(isCorrectCountry) {
+					//console.log("Country OK!");
+					
+					//Set click listener again for moving guessMarker
+					mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
+  						moveMarker(event.latLng);
+  					});
+				
+					//center map at position for currentRegion specified in XML file + set zoom as specified
+					var mapCenter = {
+						lat: parseFloat(xmlRegions.querySelector('region[name=' + currentRegion + ']')
+							.querySelector('mapCenter').querySelector('lat').textContent),
+						lng: parseFloat(xmlRegions.querySelector('region[name=' + currentRegion + ']')
+							.querySelector('mapCenter').querySelector('lng').textContent)
+					}
+					map.setCenter(mapCenter);
+					map.setZoom(parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']')
+							.querySelector('mapZoom').textContent));
+					
+					//set guessMarker position to map center
+					guessMarker.position = mapCenter;
+					
+					//Set panorama to new location
+					panorama.setPano(data.location.pano);
+        			startLoc = data.location.latLng;
+					
+				} else { //If country is not coorect, generate new random location
+					//console.log("Wrong Country!");
+					newSpot();
+				}
+			})
+			.catch((e) => {
+				console.log("Geocode was not successful for the following reason: " + e);
+			});
+		} else {
+			//Set click listener again for moving guessMarker
+			mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
+  				moveMarker(event.latLng);
+  			});
 			
-			if(isCorrectCountry) {
-				//console.log("Country OK!");
-				
-				//Set click listener again for moving guessMarker
-				mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
-  					moveMarker(event.latLng);
-  				});
-				
-				//center map at {lat: 0, lng: 0} and reset zoom to 1
-				map.setCenter(zeroPosition);
-				map.setZoom(1);
-				
-				//reset guessMarker position to {lat: 0, lng: 0}
-				guessMarker.position = zeroPosition;
-				
-				//Set panorama to new location
-				panorama.setPano(data.location.pano);
-        		startLoc = data.location.latLng;
-			} else { //If country is not coorect, generate new random location
-				//console.log("Wrong Country!");
-				newSpot();
-			}
-		})
-		.catch((e) => {
-			console.log("Geocode was not successful for the following reason: " + e);
-		});
+			//center map at {lat: 0, lng: 0} and reset zoom to 1
+			map.setCenter(zeroPosition);
+			map.setZoom(1);
+			
+			//reset guessMarker position to {lat: 0, lng: 0}
+			guessMarker.position = zeroPosition;
+			
+			//Set panorama to new location
+			panorama.setPano(data.location.pano);
+        	startLoc = data.location.latLng;
+		}
     } else 
         newSpot();
 }
@@ -334,15 +390,17 @@ async function submitGuess()
 			distanceText = (distanceToTarget/1000).toFixed(3) + " km";
 		}
 		
+		var colourPointsText;
+		
 		if (pointsAchieved < 500) {
 			//Red text for points
-			var colourPointsText = "#E00D0D";
+			colourPointsText = "#E00D0D";
 		} else if (pointsAchieved < 850) {
 			//Orange text for points
-			var colourPointsText = "#E8AF09";
+			colourPointsText = "#E8AF09";
 		} else {
 			//Green text for points
-			var colourPointsText = "#2DDF09";
+			colourPointsText = "#2DDF09";
 		}
 				
 		
