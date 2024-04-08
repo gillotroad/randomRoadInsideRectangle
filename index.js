@@ -89,7 +89,15 @@ async function initPano() {
 	});
 	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(newGameControlDiv);
 	
-	//
+	//Create "Select regions" control button at top center of panorama
+	var selectRegionsControlDiv = document.createElement("div");
+	tempControlUI = createControl(selectRegionsControlDiv, "Select regions", "Select regions", "5px", "25px");
+	tempControlUI.addEventListener("click", () => {
+  		selectRegions();
+	});
+	panorama.controls[google.maps.ControlPosition.RIGHT_TOP].push(selectRegionsControlDiv);
+	
+	
 	//Create "Submit" control button in top left corner of map
 	var submitControlDiv = document.createElement("div");
 	tempControlUI = createControl(submitControlDiv, "Submit", "Submit", "3px", "16px");
@@ -552,4 +560,56 @@ function getRandomLngBetween(westernLng, easternLng) {
 		
 		return westernLng + randomAddend;
 	}	
+}
+
+function selectRegions() {
+	let regionsWin = window.open("about:blank", "Select regions", "width=600, height=600, left=300, top=100 " +
+		", menubar=no, toolbar=no, location=no, status=no, resizable=no, scrollbars=no");
+	
+	//Set CSS file path
+	
+	
+	//Create or empty body element
+	var bodyElement = regionsWin.document.createElement("body");
+	regionsWin.document.body = bodyElement;
+	bodyElement = regionsWin.document.body;
+	bodyElement.setAttribute("style", "background-color: #FAD7A0");
+	
+	//Create fieldset
+	bodyElement.insertAdjacentHTML('beforeend', '<div id=regionsDiv></div>');
+	
+	var regionsDiv = regionsWin.document.getElementById('regionsDiv');
+	
+	regionsDiv.insertAdjacentHTML('beforeend', '<form id=regionsForm action=""><fieldset id=regionsFieldset>' +
+		'<legend style="color: #5D6D7E; font-size: 40px; font-weight: bold">Select regions:</legend></fieldset></form>');
+	
+	var fieldsetElement = regionsWin.document.getElementById('regionsFieldset');
+	
+	//For each region in XML data, create a checkbox
+	for (var regionElement of xmlRegions.getElementsByTagName('region')) {
+		var regionName = regionElement.getAttribute('name');
+		
+		fieldsetElement.insertAdjacentHTML('beforeend', '<div><input type="checkbox" id="' + 
+			regionName + '" name="' + regionName + '" /><label for="' + 
+			regionName + '">' + regionName + '</label></div>');
+	}
+	
+	//Create Save button
+	fieldsetElement.insertAdjacentHTML('beforeend', '<br><div><button type="submit" style="font-size: 20px; border-radius: 4px">Save</button></div>');
+	
+	//Set custom submit procedure to set regions
+	var formElement = regionsWin.document.getElementById('regionsForm');
+	
+	formElement.addEventListener("submit", (e) => {
+  		e.preventDefault();
+		
+		for (var inputElement of regionsWin.document.querySelectorAll('input[type=checkbox]')) {
+			console.log(inputElement.getAttribute('name'));
+			
+			//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
+		}
+	});
+	
+	
+	
 }
