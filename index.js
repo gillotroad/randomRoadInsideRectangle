@@ -563,30 +563,15 @@ function getRandomLngBetween(westernLng, easternLng) {
 }
 
 function selectRegions() {
-	/*var winHTML = `<!DOCTYPE html>
-<html>
-	<head>
-		<title>Select regions</title>
-		<link rel="stylesheet" type="text/css" href="./style.css" />
-	</head>
-	<body>
-	</body>
-</html>`;
-	
-	var winUrl = URL.createObjectURL(
-    	new Blob([winHTML], { type: "text/html" })
-	);
-	*/
-	
-	var regionsWin = window.open('./regions.html', "Select regions", "width=600, height=600, left=300, top=100 " +
+	let regionsWin = window.open("about:blank", "Select regions", "width=600, height=600, left=300, top=100 " +
 		", menubar=no, toolbar=no, location=no, status=no, resizable=no, scrollbars=no");
 	
 	//Set CSS file path
 	
 	
 	//Create or empty body element
-	//var bodyElement = regionsWin.document.createElement("body");
-	//regionsWin.document.body = bodyElement;
+	var bodyElement = regionsWin.document.createElement("body");
+	regionsWin.document.body = bodyElement;
 	bodyElement = regionsWin.document.body;
 	bodyElement.setAttribute("style", "background-color: #FAD7A0");
 	
