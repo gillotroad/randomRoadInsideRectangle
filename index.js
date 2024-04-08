@@ -585,8 +585,8 @@ function selectRegions() {
 	
 	
 	//Create or empty body element
-	var bodyElement = regionsWin.document.createElement("body");
-	regionsWin.document.body = bodyElement;
+	//var bodyElement = regionsWin.document.createElement("body");
+	//regionsWin.document.body = bodyElement;
 	bodyElement = regionsWin.document.body;
 	bodyElement.setAttribute("style", "background-color: #FAD7A0");
 	
