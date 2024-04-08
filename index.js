@@ -563,11 +563,27 @@ function getRandomLngBetween(westernLng, easternLng) {
 }
 
 function selectRegions() {
-	let regionsWin = window.open("about:blank", "Select regions", "width=600, height=600, left=300, top=100 " +
+	var winHTML = `<!DOCTYPE html>
+<html>
+	<head>
+		<title>Select regions</title>
+		<link rel="stylesheet" type="text/css" href="./style.css" />
+	</head>
+	<body>
+	</body>
+</html>`;
+	
+	var winUrl = URL.createObjectURL(
+    	new Blob([winHTML], { type: "text/html" })
+	);
+	
+	
+	var regionsWin = window.open(winUrl, "Select regions", "width=600, height=600, left=300, top=100 " +
 		", menubar=no, toolbar=no, location=no, status=no, resizable=no, scrollbars=no");
 	
 	//Set CSS file path
 	
+	regionsWin.onload = function() {
 	
 	//Create or empty body element
 	var bodyElement = regionsWin.document.createElement("body");
@@ -621,6 +637,6 @@ function selectRegions() {
 		
 	});
 	
-
+}
 	
 }
