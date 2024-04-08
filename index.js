@@ -563,7 +563,7 @@ function getRandomLngBetween(westernLng, easternLng) {
 }
 
 function selectRegions() {
-	var winHTML = `<!DOCTYPE html>
+	/*var winHTML = `<!DOCTYPE html>
 <html>
 	<head>
 		<title>Select regions</title>
@@ -576,9 +576,9 @@ function selectRegions() {
 	var winUrl = URL.createObjectURL(
     	new Blob([winHTML], { type: "text/html" })
 	);
+	*/
 	
-	
-	var regionsWin = window.open(winUrl, "Select regions", "width=600, height=600, left=300, top=100 " +
+	var regionsWin = window.open('./regions.html', "Select regions", "width=600, height=600, left=300, top=100 " +
 		", menubar=no, toolbar=no, location=no, status=no, resizable=no, scrollbars=no");
 	
 	//Set CSS file path
