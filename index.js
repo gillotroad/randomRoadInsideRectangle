@@ -578,7 +578,7 @@ function selectRegions() {
 	);
 	
 	
-	var regionsWin = window.open(winUrl, "Select regions", "width=600, height=600, left=300, top=100 " +
+	var regionsWin = window.open('./regions.html', "Select regions", "width=600, height=600, left=300, top=100 " +
 		", menubar=no, toolbar=no, location=no, status=no, resizable=no, scrollbars=no");
 	
 	//Wait until windows has finished loading; otherwise, all edits will be overridden
