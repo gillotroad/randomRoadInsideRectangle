@@ -602,14 +602,25 @@ function selectRegions() {
 	
 	formElement.addEventListener("submit", (e) => {
   		e.preventDefault();
-		
+
+		//Set isSelected for each region according to checkboxes
 		for (var inputElement of regionsWin.document.querySelectorAll('input[type=checkbox]')) {
-			console.log(inputElement.getAttribute('name'));
+			//console.log(inputElement.getAttribute('name'));
 			
 			//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
+			if (inputElement.checked) {
+				xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "Yes");
+			} else {
+				xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "");
+			}
 		}
+		
+		regionsWin.close();
+		
+		newSpot();
+		
 	});
 	
-	
+
 	
 }
