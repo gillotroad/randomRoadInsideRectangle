@@ -581,62 +581,60 @@ function selectRegions() {
 	var regionsWin = window.open(winUrl, "Select regions", "width=600, height=600, left=300, top=100 " +
 		", menubar=no, toolbar=no, location=no, status=no, resizable=no, scrollbars=no");
 	
-	//Set CSS file path
-	
+	//Wait until windows has finished loading; otherwise, all edits will be overridden
 	regionsWin.onload = function() {
-	
-	//Create or empty body element
-	var bodyElement = regionsWin.document.createElement("body");
-	regionsWin.document.body = bodyElement;
-	bodyElement = regionsWin.document.body;
-	bodyElement.setAttribute("style", "background-color: #FAD7A0");
-	
-	//Create fieldset
-	bodyElement.insertAdjacentHTML('beforeend', '<div id=regionsDiv></div>');
-	
-	var regionsDiv = regionsWin.document.getElementById('regionsDiv');
-	
-	regionsDiv.insertAdjacentHTML('beforeend', '<form id=regionsForm action=""><fieldset id=regionsFieldset>' +
-		'<legend style="color: #5D6D7E; font-size: 40px; font-weight: bold">Select regions:</legend></fieldset></form>');
-	
-	var fieldsetElement = regionsWin.document.getElementById('regionsFieldset');
-	
-	//For each region in XML data, create a checkbox
-	for (var regionElement of xmlRegions.getElementsByTagName('region')) {
-		var regionName = regionElement.getAttribute('name');
+		//Create or empty body element
+		var bodyElement = regionsWin.document.createElement("body");
+		regionsWin.document.body = bodyElement;
+		bodyElement = regionsWin.document.body;
+		bodyElement.setAttribute("style", "background-color: #FAD7A0");
 		
-		fieldsetElement.insertAdjacentHTML('beforeend', '<div><input type="checkbox" id="' + 
-			regionName + '" name="' + regionName + '" /><label for="' + 
-			regionName + '">' + regionName + '</label></div>');
-	}
-	
-	//Create Save button
-	fieldsetElement.insertAdjacentHTML('beforeend', '<br><div><button type="submit" style="font-size: 20px; border-radius: 4px">Save</button></div>');
-	
-	//Set custom submit procedure to set regions
-	var formElement = regionsWin.document.getElementById('regionsForm');
-	
-	formElement.addEventListener("submit", (e) => {
-  		e.preventDefault();
-
-		//Set isSelected for each region according to checkboxes
-		for (var inputElement of regionsWin.document.querySelectorAll('input[type=checkbox]')) {
-			//console.log(inputElement.getAttribute('name'));
+		//Create fieldset
+		bodyElement.insertAdjacentHTML('beforeend', '<div id=regionsDiv></div>');
+		
+		var regionsDiv = regionsWin.document.getElementById('regionsDiv');
+		
+		regionsDiv.insertAdjacentHTML('beforeend', '<form id=regionsForm action=""><fieldset id=regionsFieldset>' +
+			'<legend style="color: #5D6D7E; font-size: 40px; font-weight: bold">Select regions:</legend></fieldset></form>');
+		
+		var fieldsetElement = regionsWin.document.getElementById('regionsFieldset');
+		
+		//For each region in XML data, create a checkbox
+		for (var regionElement of xmlRegions.getElementsByTagName('region')) {
+			var regionName = regionElement.getAttribute('name');
 			
-			//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
-			if (inputElement.checked) {
-				xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "Yes");
-			} else {
-				xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "");
-			}
+			fieldsetElement.insertAdjacentHTML('beforeend', '<div><input type="checkbox" id="' + 
+				regionName + '" name="' + regionName + '" /><label for="' + 
+				regionName + '">' + regionName + '</label></div>');
 		}
 		
-		regionsWin.close();
+		//Create Save button
+		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div><button type="submit" style="font-size: 20px; border-radius: 4px">Save</button></div>');
 		
-		newSpot();
+		//Set custom submit procedure to set regions
+		var formElement = regionsWin.document.getElementById('regionsForm');
 		
-	});
+		formElement.addEventListener("submit", (e) => {
+  			e.preventDefault();
+			
+			//Set isSelected for each region according to checkboxes
+			for (var inputElement of regionsWin.document.querySelectorAll('input[type=checkbox]')) {
+				//console.log(inputElement.getAttribute('name'));
+				
+				//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
+				if (inputElement.checked) {
+					xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "Yes");
+				} else {
+					xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "");
+				}
+			}
+		
+			regionsWin.close();
+		
+			newSpot();
+		
+		});
 	
-}
+	}
 	
 }
