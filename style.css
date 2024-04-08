@@ -58,7 +58,7 @@ body {
     font-size: 100%;
 }
 
-input[type=checkbox] {
+label {
     font-size: 20px;
 }
 
