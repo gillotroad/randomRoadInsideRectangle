@@ -59,7 +59,19 @@ body {
 }
 
 #regionsDiv {
-    fon-family: "Comic Sans MS", "Arial", sans-serif;
+    font-family: "Comic Sans MS", "Arial", sans-serif;
+}
+
+input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 2px solid #8cad2d;
+}
+
+input[type="checkbox"]:checked {
+  box-shadow: inset 0px 0px 0px 3px #fff;
+  background-color: #8cad2d;
 }
 
 label {
