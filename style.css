@@ -62,9 +62,13 @@ body {
     font-family: "Comic Sans MS", "Arial", sans-serif;
 }
 
+#checkboxDiv {
+    margin-bottom: 5px;
+}
+
 input[type=checkbox] {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 5px;
     border: 2px solid #8cad2d;
 }
@@ -76,5 +80,6 @@ input[type="checkbox"]:checked {
 
 label {
     font-size: 20px;
+    margin-left: 8px;
 }
 
