@@ -40,7 +40,7 @@ async function initPano() {
 	
 	
 	//Load regions XML file
-	fetch("./regions.xml")
+	fetch("https://gillotroad.github.io/randomRoadInsideRectangle/regions.xml")
 		.then(response => response.text())
 		.then(data => {
 			let parser = new DOMParser();
