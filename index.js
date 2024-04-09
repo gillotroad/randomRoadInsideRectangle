@@ -42,9 +42,9 @@ async function initPano() {
 	//Load regions XML file
 	fetch('./regions.xml')
 		.then((response) => response.text())
-		.then((xmlString) => {
+		.then((text) => {
 			let parser = new DOMParser();
-			xmlRegions = parser.parseFromString(xmlString, "application/xml");
+			xmlRegions = parser.parseFromString(text, "text/xml");
 	});
 	
 	//Add isSelected = "" as attribute to each region element
