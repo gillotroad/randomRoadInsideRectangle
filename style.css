@@ -70,11 +70,13 @@ input[type=checkbox] {
     width: 20px;
     height: 20px;
     border-radius: 5px;
-    border: 2px solid #8cad2d;
+    border: 3px solid #8cad2d;
 }
 
 input[type="checkbox"]:checked {
   box-shadow: inset 0px 0px 0px 3px #fff;
+  border-radius: 5px;
+  border: 3px solid #8cad2d;
   background-color: #8cad2d;
 }
 
