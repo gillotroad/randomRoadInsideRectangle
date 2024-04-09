@@ -58,6 +58,10 @@ body {
     font-size: 100%;
 }
 
+#regionsDiv {
+    fontFamily: "Comic Sans MS", "Arial" ,sans-serif;
+}
+
 label {
     font-size: 20px;
 }
