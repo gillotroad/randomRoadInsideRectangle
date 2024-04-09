@@ -592,7 +592,7 @@ function selectRegions() {
 		for (var regionElement of xmlRegions.getElementsByTagName('region')) {
 			var regionName = regionElement.getAttribute('name');
 			
-			fieldsetElement.insertAdjacentHTML('beforeend', '<div><input type="checkbox" id="' + 
+			fieldsetElement.insertAdjacentHTML('beforeend', '<div id=checkboxDiv><input type="checkbox" id="' + 
 				regionName + '" name="' + regionName + '" /><label for="' + 
 				regionName + '">' + regionName + '</label></div>');
 		}
