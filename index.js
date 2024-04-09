@@ -594,10 +594,15 @@ function selectRegions() {
 		//For each region in XML data, create a checkbox
 		for (var regionElement of xmlRegions.getElementsByTagName('region')) {
 			var regionName = regionElement.getAttribute('name');
-			
+						
 			fieldsetElement.insertAdjacentHTML('beforeend', '<div id=checkboxDiv><input type="checkbox" id="' + 
 				regionName + '" name="' + regionName + '" /><label for="' + 
 				regionName + '">' + regionName + '</label></div>');
+
+			//Check checkbox if isSelected for region is 'Yes'
+			if (regionElement.getAttribute('isSelected') == 'Yes') {
+				regionsWin.document.querySelector('input[name=' + regionName + ']').checked = true;
+			}
 		}
 		
 		//Create Save button
@@ -613,7 +618,6 @@ function selectRegions() {
 			for (var inputElement of regionsWin.document.querySelectorAll('input[type=checkbox]')) {
 				//console.log(inputElement.getAttribute('name'));
 				
-				//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
 				if (inputElement.checked) {
 					xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "Yes");
 				} else {
