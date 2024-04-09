@@ -45,7 +45,7 @@ async function initPano() {
 		.then((xmlString) => {
 			let parser = new DOMParser();
 			xmlRegions = parser.parseFromString(xmlString, "application/xml");
-	}
+	});
 	
 	//Add isSelected = "" as attribute to each region element
 	for (let iCount = 0; iCount < xmlRegions.getElementsByTagName("region").length; iCount++) {
