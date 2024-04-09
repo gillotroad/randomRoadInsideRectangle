@@ -83,7 +83,8 @@ async function initPano() {
 	
 	//Create "New Game" control button in top right corner of panorama
 	var newGameControlDiv = document.createElement("div");
-	tempControlUI = createControl(newGameControlDiv, "Starts a New Game Session", "New Game", "5px", "25px");
+	tempControlUI = createControl(newGameControlDiv, 
+		"New Game Session", "New Game", "5px", "25px", "", "");
 	tempControlUI.addEventListener("click", () => {
   		newSpot();
 	});
@@ -91,16 +92,17 @@ async function initPano() {
 	
 	//Create "Select regions" control button at top center of panorama
 	var selectRegionsControlDiv = document.createElement("div");
-	tempControlUI = createControl(selectRegionsControlDiv, "Select regions", "Select regions", "5px", "25px");
+	tempControlUI = createControl(selectRegionsControlDiv, 
+		"Select regions", "Select regions", "5px", "25px", "", "20px");
 	tempControlUI.addEventListener("click", () => {
   		selectRegions();
 	});
-	panorama.controls[google.maps.ControlPosition.RIGHT_TOP].push(selectRegionsControlDiv);
+	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(selectRegionsControlDiv);
 	
 	
 	//Create "Submit" control button in top left corner of map
 	var submitControlDiv = document.createElement("div");
-	tempControlUI = createControl(submitControlDiv, "Submit", "Submit", "3px", "16px");
+	tempControlUI = createControl(submitControlDiv, "Submit", "Submit", "3px", "16px", "", "");
 	tempControlUI.addEventListener("click", () => {
   		submitGuess();
 	});
@@ -319,7 +321,7 @@ function getRandomLatLng(max)
     return num;
 }
 
-function createControl(controlDiv, desc, content, bSize, fSize) 
+function createControl(controlDiv, desc, content, bSize, fSize, marginL, marginR) 
 {
     // Set CSS for the control border.
     const controlUI = document.createElement("div");
@@ -329,6 +331,8 @@ function createControl(controlDiv, desc, content, bSize, fSize)
     controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
     controlUI.style.cursor = "pointer";
     controlUI.style.marginBottom = "22px";
+	controlUI.style.marginLeft = marginL
+	controlUI.style.marginRight = marginR;
     controlUI.style.textAlign = "center";
     controlUI.title = desc;
     controlDiv.appendChild(controlUI);
