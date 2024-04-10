@@ -15,6 +15,10 @@
             <south>46.34766220473346</south>
             <west>9.506080096763027</west>
         </rectangleBounds>
+		<pointsCalculation>
+			<maxTargetDistance>250</maxTargetDistance>
+			<exponentMultiplicator>1</exponentMultiplicator>
+		</pointsCalculation>
     </region>
     <region name="Germany">
         <shortCountryNames>
@@ -31,6 +35,10 @@
             <south>47.25199367794615</south>
             <west>5.858619159263028</west>
         </rectangleBounds>
+		<pointsCalculation>
+			<maxTargetDistance>400</maxTargetDistance>
+			<exponentMultiplicator>1</exponentMultiplicator>
+		</pointsCalculation>
     </region>
 </regions>
 
@@ -52,6 +60,10 @@
             <south></south>
             <west></west>
         </rectangleBounds>
+		<pointsCalculation>
+			<maxTargetDistance></maxTargetDistance>
+			<exponentMultiplicator></exponentMultiplicator>
+		</pointsCalculation>
     </region>
 
 
