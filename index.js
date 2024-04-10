@@ -494,7 +494,16 @@ function calculatePoints(iDistance, iTime) {
 
 function distMultiplier(iDistance) {
 	var minProximity = 70;
-	var maxDistance = 8000000;
+	var exponentMultiplicator;
+	var maxDistance;
+
+	if (currentRegion.length == 0) {
+		maxDistance = 8000000;
+		exponentMultiplicator = 1;
+	} else {
+		maxDistance = parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('maxTargetDistance').textContent) * 1000;
+		exponentMultiplicator = parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('exponentMultiplicator').textContent);
+	}
 	
 	if (iDistance <= minProximity) {
 		return 0;
@@ -505,7 +514,7 @@ function distMultiplier(iDistance) {
 		//return (1/(maxDistance - minProximity)) * (iDistance - minProximity);
 		
 		//Geometric function
-		return ((iDistance - minProximity) / (8000000 - minProximity)) ** (1 / 1.5);
+		return ((iDistance - minProximity) / (maxDistance - minProximity)) ** ((1 / 1.5) * (1 / exponentMultiplicator));
 	}
 }
 
