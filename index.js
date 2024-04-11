@@ -588,7 +588,6 @@ function selectRegions() {
 		var bodyElement = regionsWin.document.createElement("body");
 		regionsWin.document.body = bodyElement;
 		bodyElement = regionsWin.document.body;
-		//bodyElement.setAttribute("style", "background-color: #000000");
 		bodyElement.setAttribute("id", "selectRegionsBody");
 		
 		//Create fieldset
@@ -597,7 +596,7 @@ function selectRegions() {
 		var regionsDiv = regionsWin.document.getElementById('regionsDiv');
 		
 		regionsDiv.insertAdjacentHTML('beforeend', '<form id="regionsForm" action=""><fieldset id="regionsFieldset">' +
-			'<legend style="color: #5D6D7E; font-size: 40px; font-weight: bold">Select regions:</legend></fieldset></form>');
+			'<legend style="font-size: 40px; font-weight: bold">Select regions:</legend></fieldset></form>');
 		
 		var fieldsetElement = regionsWin.document.getElementById('regionsFieldset');
 		
@@ -614,6 +613,9 @@ function selectRegions() {
 				regionsWin.document.querySelector('input[name=' + regionName + ']').checked = true;
 			}
 		}
+
+		//Create info text line for worldwide game selection
+		fieldsetElement.insertAdjacentHTML('beforeend', '<br><p style="font-size: 20px">(For worldwide game, unselect all regions)</p>');
 		
 		//Create Save button
 		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div id="buttonDiv"><button type="submit" name="submitButton">Save</button></div>');
