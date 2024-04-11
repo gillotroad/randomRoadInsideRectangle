@@ -603,11 +603,17 @@ function selectRegions() {
 		//For each region in XML data, create a checkbox
 		for (var regionElement of xmlRegions.getElementsByTagName('region')) {
 			var regionName = regionElement.getAttribute('name');
-						
+
+			/* OLD VERSION OF CHECKBOXES
 			fieldsetElement.insertAdjacentHTML('beforeend', '<div id="checkboxDiv"><input type="checkbox" id="' + 
 				regionName + '" name="' + regionName + '" /><label for="' + 
 				regionName + '">' + regionName + '</label></div>');
-
+    		*/
+			
+			fieldsetElement.insertAdjacentHTML('beforeend', '<div id="checkboxDiv"><label class="checkboxContainer"><input type="checkbox" id="' 
+				+ regionName + '" name="' + regionName + '"><span class="checkboxIndicator"></span>' + regionName + '</label></div>');
+			
+			
 			//Check checkbox if isSelected for region is 'Yes'
 			if (regionElement.getAttribute('isSelected') == 'Yes') {
 				regionsWin.document.querySelector('input[name=' + regionName + ']').checked = true;
