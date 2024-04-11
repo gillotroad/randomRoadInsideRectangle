@@ -84,3 +84,10 @@ label {
     margin-left: 8px;   
 }
 
+button[name="submitButton"], button[name="uncheckButton"] {
+    font-size: 20px;
+    border-radius: 4px;
+    padding: 5px 25px;
+    margin-right: 10px;
+}
+

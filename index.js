@@ -615,7 +615,7 @@ function selectRegions() {
 		}
 		
 		//Create Save button
-		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div id="buttonDiv"><button type="submit" name="submitButton" style="font-size: 20px; border-radius: 4px; padding: 5px 25px;">Save</button></div>');
+		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div id="buttonDiv"><button type="submit" name="submitButton">Save</button></div>');
 
 		//Create "Unselect all" button
 		fieldsetElement.querySelector('div[id="buttonDiv"]').insertAdjacentHTML('beforeend', '<button type="button" name="uncheckButton">Unselect all</button>');
