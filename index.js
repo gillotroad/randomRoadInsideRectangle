@@ -588,7 +588,8 @@ function selectRegions() {
 		var bodyElement = regionsWin.document.createElement("body");
 		regionsWin.document.body = bodyElement;
 		bodyElement = regionsWin.document.body;
-		bodyElement.setAttribute("style", "background-color: #FAD7A0");
+		//bodyElement.setAttribute("style", "background-color: #000000");
+		bodyElement.setAttribute("id", "selectRegionsBody");
 		
 		//Create fieldset
 		bodyElement.insertAdjacentHTML('beforeend', '<div id="regionsDiv"></div>');
@@ -648,7 +649,7 @@ function selectRegions() {
 			for (var inputElement of bodyElement.querySelectorAll('input[type=checkbox]')) {
 				inputElement.checked = false;
 			}
-		}
+		});
 	
 	}
 	
