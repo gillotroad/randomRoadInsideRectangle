@@ -348,6 +348,8 @@ function createControl(controlDiv, desc, content, bSize, fSize, marginL, marginR
     controlText.style.lineHeight = "20px";
     controlText.style.paddingLeft = "5px";
     controlText.style.paddingRight = "5px";
+	controlText.style.paddingTop = "2px";
+	controlText.style.paddingBottom = "2px";
     controlText.innerHTML = content;
     controlUI.appendChild(controlText);
     return controlUI;
