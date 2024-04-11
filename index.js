@@ -603,12 +603,6 @@ function selectRegions() {
 		//For each region in XML data, create a checkbox
 		for (var regionElement of xmlRegions.getElementsByTagName('region')) {
 			var regionName = regionElement.getAttribute('name');
-
-			/* OLD VERSION OF CHECKBOXES
-			fieldsetElement.insertAdjacentHTML('beforeend', '<div id="checkboxDiv"><input type="checkbox" id="' + 
-				regionName + '" name="' + regionName + '" /><label for="' + 
-				regionName + '">' + regionName + '</label></div>');
-    		*/
 			
 			fieldsetElement.insertAdjacentHTML('beforeend', '<div id="checkboxDiv"><label class="checkboxContainer"><input type="checkbox" id="' 
 				+ regionName + '" name="' + regionName + '"><span class="checkboxIndicator"></span>' + regionName + '</label></div>');
@@ -621,10 +615,10 @@ function selectRegions() {
 		}
 
 		//Create info text line for worldwide game selection
-		fieldsetElement.insertAdjacentHTML('beforeend', '<br><p style="font-size: 20px">(For worldwide game, unselect all regions)</p>');
+		fieldsetElement.insertAdjacentHTML('beforeend', '<p style="font-size: 18px; color: #FEF9E7">(For worldwide game, unselect all regions)</p>');
 		
 		//Create Save button
-		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div id="buttonDiv"><button type="submit" name="submitButton">Save</button></div>');
+		fieldsetElement.insertAdjacentHTML('beforeend', '<div id="buttonDiv"><button type="submit" name="submitButton">Save</button></div>');
 
 		//Create "Unselect all" button
 		fieldsetElement.querySelector('div[id="buttonDiv"]').insertAdjacentHTML('beforeend', '<button type="button" name="uncheckButton">Unselect all</button>');
