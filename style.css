@@ -81,7 +81,7 @@ input[type=checkbox] {
 input[type="checkbox"]:checked {
   border-radius: 5px;
   border: 3px solid #58D68D;
-  accent-color: #58D68D;
+  background-color: #58D68D;
 }
 
 label {
