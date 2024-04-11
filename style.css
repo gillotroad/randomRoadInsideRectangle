@@ -58,6 +58,10 @@ body {
     font-size: 100%;
 }
 
+#selectRegionsBody {
+    background-color: #000000;
+}
+
 #regionsDiv {
     font-family: "Comic Sans MS", "Arial", sans-serif;
 }
@@ -81,7 +85,8 @@ input[type="checkbox"]:checked {
 
 label {
     font-size: 20px;
-    margin-left: 8px;   
+    color: #FFFFFF;
+    margin-left: 8px; 
 }
 
 button[name="submitButton"], button[name="uncheckButton"] {
@@ -89,5 +94,10 @@ button[name="submitButton"], button[name="uncheckButton"] {
     border-radius: 4px;
     padding: 5px 25px;
     margin-right: 20px;
+}
+
+#regionsFieldset {
+    border-color: #FFFFFF;
+    border-style: solid;
 }
 
