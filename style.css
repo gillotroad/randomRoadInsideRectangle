@@ -71,6 +71,7 @@ body {
     margin-bottom: 5px;
 }
 
+/*
 .checkboxContainer input {
   display: none;
 }
@@ -81,7 +82,6 @@ body {
   width: 23px;
   border: 3px solid #CCC;
   border-radius: 5px;
-  float: left;
   margin-right: 5px;
 }
 
@@ -93,15 +93,18 @@ body {
   background-color: blue;
   box-shadow: 0 0 0 3px #58D68D inset;
 }
+*/
 
-/*
+
 input[type=checkbox] {
     width: 23px;
     height: 23px;
     border-radius: 5px;
     border: 3px solid #58D68D;
+  accent-color: #58D68D;
 }
 
+/*
 input[type="checkbox"]:checked {
   border-radius: 5px;
   border: 3px solid #58D68D;
