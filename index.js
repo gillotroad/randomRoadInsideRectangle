@@ -12,8 +12,8 @@ Manual:
 
 
 Version:
-29.03.24
-20:59
+11.04.24
+19:45
 
 */
 
@@ -94,7 +94,7 @@ async function initPano() {
 	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(newGameControlDiv);
 	
 	//Create "Select regions" control button at top center of panorama if URL parameter "regions" has been passed
-	if (new URLSearchParams(window.location.search).toString() == 'regions') {
+	if (window.location.search == '?regions') {
 		var selectRegionsControlDiv = document.createElement("div");
 		tempControlUI = createControl(selectRegionsControlDiv, 
 			"Select regions", "Select regions", "5px", "25px", "", "20px");
