@@ -591,11 +591,11 @@ function selectRegions() {
 		bodyElement.setAttribute("style", "background-color: #FAD7A0");
 		
 		//Create fieldset
-		bodyElement.insertAdjacentHTML('beforeend', '<div id=regionsDiv></div>');
+		bodyElement.insertAdjacentHTML('beforeend', '<div id="regionsDiv"></div>');
 		
 		var regionsDiv = regionsWin.document.getElementById('regionsDiv');
 		
-		regionsDiv.insertAdjacentHTML('beforeend', '<form id=regionsForm action=""><fieldset id=regionsFieldset>' +
+		regionsDiv.insertAdjacentHTML('beforeend', '<form id="regionsForm" action=""><fieldset id="regionsFieldset">' +
 			'<legend style="color: #5D6D7E; font-size: 40px; font-weight: bold">Select regions:</legend></fieldset></form>');
 		
 		var fieldsetElement = regionsWin.document.getElementById('regionsFieldset');
@@ -604,7 +604,7 @@ function selectRegions() {
 		for (var regionElement of xmlRegions.getElementsByTagName('region')) {
 			var regionName = regionElement.getAttribute('name');
 						
-			fieldsetElement.insertAdjacentHTML('beforeend', '<div id=checkboxDiv><input type="checkbox" id="' + 
+			fieldsetElement.insertAdjacentHTML('beforeend', '<div id="checkboxDiv"><input type="checkbox" id="' + 
 				regionName + '" name="' + regionName + '" /><label for="' + 
 				regionName + '">' + regionName + '</label></div>');
 
@@ -615,7 +615,10 @@ function selectRegions() {
 		}
 		
 		//Create Save button
-		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div><button type="submit" style="font-size: 20px; border-radius: 4px; padding: 5px 25px;">Save</button></div>');
+		fieldsetElement.insertAdjacentHTML('beforeend', '<br><div id="buttonDiv"><button type="submit" name="submitButton" style="font-size: 20px; border-radius: 4px; padding: 5px 25px;">Save</button></div>');
+
+		//Create "Unselect all" button
+		fieldsetElement.querySelector('div[id="buttonDiv"]').insertAdjacentHTML('beforeend', '<button type="button" name="uncheckButton">Unselect all</button>');
 		
 		//Set custom submit procedure to set regions
 		var formElement = regionsWin.document.getElementById('regionsForm');
