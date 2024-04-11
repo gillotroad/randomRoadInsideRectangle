@@ -642,6 +642,13 @@ function selectRegions() {
 			newSpot();
 		
 		});
+
+		//Set function for clicking "Unselect all" button to uncheck all checkboxes
+		bodyElement.querySelector('button[name=uncheckButton]').addEventListener("click", (e) => {
+			for (var inputElement of bodyElement.querySelectorAll('input[type=checkbox]')) {
+				inputElement.checked = false;
+			}
+		}
 	
 	}
 	
