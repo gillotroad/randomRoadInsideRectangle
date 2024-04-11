@@ -1,19 +1,17 @@
-/**
- * @license
- * Copyright 2019 Google LLC. All Rights Reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
-
 /*
-Description:
-
+Description: "RandomRoad"
+	Google StreetView location guessing game including selection of pre-defined regions
 
 Manual:
-
+	-Guess randomly generated StreetView location on map in top left corner of screen
+ 	-Default mode is worldwide
+ 	-Scored points are a function of distance from guess to target and time needed
+  	-Use 'New game' button to restart at new random location
+   	-Use 'Select regions' button to limit locations to selected regions (generated from XML file 'regions.xml')
 
 Version:
-11.04.24
-19:45
+	11.04.24
+	19:45
 
 */
 
@@ -51,11 +49,7 @@ async function initPano() {
 		xmlRegions.getElementsByTagName("region")[iCount].setAttribute("isSelected", "");
 	}
 	
-	//For testing: Select regions "Germany" + "Austria"
-	//xmlRegions.getElementsByTagName("region")[1].setAttribute("isSelected", "Yes");
-	//xmlRegions.getElementsByTagName("region")[0].setAttribute("isSelected", "Yes");
-	
-	newSpot();
+	newLocation();
 	
 	//Create map for guessing
 	map = new Map(document.getElementById("map"), {
@@ -89,7 +83,7 @@ async function initPano() {
 	tempControlUI = createControl(newGameControlDiv, 
 		"New Game Session", "New Game", "5px", "25px", "", "");
 	tempControlUI.addEventListener("click", () => {
-  		newSpot();
+  		newLocation();
 	});
 	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(newGameControlDiv);
 	
@@ -153,7 +147,7 @@ async function initPano() {
 
 initPano();
 
-async function newSpot() 
+async function newLocation() 
 {
 	const { Map } = await google.maps.importLibrary("maps");
 	
@@ -244,7 +238,7 @@ async function newSpot()
 
 function processSVData(data, status) 
 {
-    if (status === 'OK') {
+    if (status === 'OK') { //Check for valid StreetView location
         var geocoder = new google.maps.Geocoder();
 		
 		if(currentRegion.length > 0) {
@@ -292,7 +286,7 @@ function processSVData(data, status)
 					
 				} else { //If country is not coorect, generate new random location
 					//console.log("Wrong Country!");
-					newSpot();
+					newLocation();
 				}
 			})
 			.catch((e) => {
@@ -316,7 +310,7 @@ function processSVData(data, status)
         	startLoc = data.location.latLng;
 		}
     } else 
-        newSpot();
+        newLocation();
 }
 
 function getRandomLatLng(max) 
@@ -369,7 +363,8 @@ async function submitGuess()
 	//var gameDurationText = formatTime((new Date().getTime() - startTime) / 1000);
 	var panPosition = panorama.getPosition();
 	var guessMarkerPosition = guessMarker.position;
-	
+
+	//On first submit of current game session calculate time needed
 	if (hasSubmitted === false) {
 		secondsGameDuration = (new Date().getTime() - startTime) / 1000;
 		gameDurationText = formatTime(secondsGameDuration);
@@ -469,6 +464,7 @@ async function submitGuess()
 	}
 }
 
+//Generate readable string from time in seconds
 function formatTime(seconds) {
     var timeString;
     if (seconds < 60) 
@@ -501,10 +497,10 @@ function distMultiplier(iDistance) {
 	var exponentMultiplicator;
 	var maxDistance;
 
-	if (currentRegion.length == 0) {
+	if (currentRegion.length == 0) { //For worldwide game session
 		maxDistance = 8000000;
 		exponentMultiplicator = 1;
-	} else {
+	} else { //For regional game session
 		maxDistance = parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('maxTargetDistance').textContent) * 1000;
 		exponentMultiplicator = parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('exponentMultiplicator').textContent);
 	}
@@ -646,7 +642,7 @@ function selectRegions() {
 		
 			regionsWin.close();
 		
-			newSpot();
+			newLocation();
 		
 		});
 
