@@ -72,15 +72,15 @@ body {
 }
 
 input[type=checkbox] {
-    width: 20px;
-    height: 20px;
+    width: 23px;
+    height: 23px;
     border-radius: 5px;
-    border: 3px solid #8cad2d;
+    border: 3px solid #58D68D;
 }
 
 input[type="checkbox"]:checked {
   border-radius: 5px;
-  border: 3px solid #8cad2d;
+  border: 3px solid #58D68D;
   background-color: #58D68D;
 }
 
