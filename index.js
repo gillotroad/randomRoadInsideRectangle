@@ -93,14 +93,16 @@ async function initPano() {
 	});
 	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(newGameControlDiv);
 	
-	//Create "Select regions" control button at top center of panorama
-	var selectRegionsControlDiv = document.createElement("div");
-	tempControlUI = createControl(selectRegionsControlDiv, 
-		"Select regions", "Select regions", "5px", "25px", "", "20px");
-	tempControlUI.addEventListener("click", () => {
-  		selectRegions();
-	});
-	panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(selectRegionsControlDiv);
+	//Create "Select regions" control button at top center of panorama if URL parameter "regions" has been passed
+	if (new URLSearchParams(window.location.search).toString() == 'regions') {
+		var selectRegionsControlDiv = document.createElement("div");
+		tempControlUI = createControl(selectRegionsControlDiv, 
+			"Select regions", "Select regions", "5px", "25px", "", "20px");
+		tempControlUI.addEventListener("click", () => {
+  			selectRegions();
+		});
+		panorama.controls[google.maps.ControlPosition.TOP_RIGHT].push(selectRegionsControlDiv);
+	}
 	
 	
 	//Create "Submit" control button in top left corner of map
