@@ -255,7 +255,7 @@ function processSVData(data, status)
 				for (let iResult = 0; iResult < results.length; iResult++) {		
 					if(results[iResult].address_components[0].types[0].includes("country")) {
 						//Compare reverse geocosding result to all countries in currentRegion
-						for (let iCountry = 0; iCountry < xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').childElementCount; iCOuntry++) {
+						for (let iCountry = 0; iCountry < xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').childElementCount; iCountry++) {
 							if(results[iResult].address_components[0].short_name == xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').children[iCountry]) {
 								isCorrectCountry = true;
 								currentCountry = xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').children[iCountry];
