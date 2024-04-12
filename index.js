@@ -168,7 +168,7 @@ async function newLocation()
 		var numRegionsSelected = xmlRegions.querySelectorAll('region[isSelected=Yes]').length;
 		//console.log(numRegionsSelected);
 		
-		
+		currentCountry = "";
 		
 		if (numRegionsSelected > 0) {
 			//Randomly choose one of the selected regions
@@ -200,11 +200,13 @@ async function newLocation()
 			
 			randomLat = getRandomLatBetween(southernBound, northernBound);
 			randomLng = getRandomLngBetween(westernBound, easternBound);
-			
+
+			/*DELETE:
 			//Set currentCountry to short_name of randomly chosen country
 			currentCountry = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
 				.querySelector("shortCountryNames").children[randomCountry].textContent;
 			//console.log(currentCountry);
+			END DELETE*/
 			
 			//Set currentRegion to name attribute of randomly chosen region
 			currentRegion = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
@@ -252,9 +254,14 @@ function processSVData(data, status)
 				
 				for (let iResult = 0; iResult < results.length; iResult++) {		
 					if(results[iResult].address_components[0].types[0].includes("country")) {
-						if(results[iResult].address_components[0].short_name == currentCountry) {
-							isCorrectCountry = true;
+						//Compare reverse geocosding result to all countries in currentRegion
+						for (let iCountry = 0; iCountry < xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').childElementCount; iCOuntry++) {
+							if(results[iResult].address_components[0].short_name == xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').children[iCountry]) {
+								isCorrectCountry = true;
+								currentCountry = xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').children[iCountry];
+							}
 						}
+						
 					}
 				}
 				
