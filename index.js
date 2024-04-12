@@ -10,8 +10,8 @@ Manual:
    	-Use 'Select regions' button to limit locations to selected regions (generated from XML file 'regions.xml')
 
 Version:
-	11.04.24
-	19:45
+	12.04.24
+	19:50
 
 */
 
