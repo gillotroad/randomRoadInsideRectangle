@@ -40,8 +40,72 @@
             <exponentMultiplicator>1</exponentMultiplicator>
         </pointsCalculation>
     </region>
+	<region name="Europe">
+		<shortCountryNames>
+        	<Albania>AL</Albania>
+            <Andorra>AD</Andorra>
+            <Austria>AT</Austria>
+            <Belarus>BY</Belarus>
+            <Belgium>BE</Belgium>
+            <Bosnia>BA</Bosnia>
+            <Bulgaria>BG</Bulgaria>
+            <Croatia>HR</Croatia>
+            <Czech_Republic>CZ</Czech_Republic>
+            <Denmark>DK</Denmark>
+            <Estonia>EE</Estonia>
+            <Finland>FI</Finland>
+            <France>FR</France>
+            <Germany>DE</Germany>
+            <Greece>GR</Greece>
+            <Hungary>HU</Hungary>
+            <Iceland>IS</Iceland>
+            <Ireland>IE</Ireland>
+            <Italy>IT</Italy>
+            <Kazakhstan>KZ</Kazakhstan>
+            <Latvia>LV</Latvia>
+            <Liechtenstein>LI</Liechtenstein>
+            <Lithuania>LT</Lithuania>
+            <Luxembourg>LU</Luxembourg>
+            <Malta>MT</Malta>
+            <Moldova>MD</Moldova>
+            <Monaco>MC</Monaco>
+            <Montenegro>ME</Montenegro>
+            <Netherlands>NL</Netherlands>
+            <North_Macedonia>MK</North_Macedonia>
+            <Norway>NO</Norway>
+            <Poland>PL</Poland>
+            <Portugal>PT</Portugal>
+            <Romania>RO</Romania>
+            <Russia>RU</Russia>
+            <San_Marino>SM</San_Marino>
+            <Serbia>RS</Serbia>
+            <Slovakia>SK</Slovakia>
+            <Slovenia>SI</Slovenia>
+            <Spain>ES</Spain>
+            <Sweden>SE</Sweden>
+            <Switzerland>CH</Switzerland>
+            <Turkey>TR</Turkey>
+            <Ukraine>UA</Ukraine>
+            <United_Kingdom>GB</United_Kingdom>
+            <Vatican>VA</Vatican>
+   		</shortCountryNames>
+    	<mapCenter>
+        	<lat>53.83238</lat>
+        	<lng>24.9180427</lng>
+        </mapCenter>
+        <mapZoom>2</mapZoom>
+        <rectangleBounds>
+            <north>71.3061997305792</north>
+            <east>59.06072735786436</east>
+            <south>34.75679176288531</south>
+            <west>-24.767397642135602</west>
+        </rectangleBounds>
+		<pointsCalculation>
+			<maxTargetDistance>1100</maxTargetDistance>
+			<exponentMultiplicator>1</exponentMultiplicator>
+		</pointsCalculation>
+    </region>
 </regions>
-
 <!--Template:
 
 
