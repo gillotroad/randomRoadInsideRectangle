@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<regions>
+    <region name="Austria">
+        <shortCountryNames>
+            <Austria>AT</Austria>
+        </shortCountryNames>
+        <mapCenter>
+            <lat>47.50980551122986</lat>
+            <lng>13.169714878983603</lng>
+        </mapCenter>
+        <mapZoom>4</mapZoom>
+        <rectangleBounds>
+            <north>49.036864010687246</north>
+            <east>17.215430682700493</east>
+            <south>46.34766220473346</south>
+            <west>9.506080096763027</west>
+        </rectangleBounds>
+        <pointsCalculation>
+            <maxTargetDistance>250</maxTargetDistance>
+            <exponentMultiplicator>1</exponentMultiplicator>
+        </pointsCalculation>
+    </region>
+    <region name="Germany">
+        <shortCountryNames>
+            <Germany>DE</Germany>
+        </shortCountryNames>
+        <mapCenter>
+            <lat>50.71909267478724</lat>
+            <lng>10.73075002222777</lng>
+        </mapCenter>
+        <mapZoom>4</mapZoom>
+        <rectangleBounds>
+            <north>54.92626188567992</north>
+            <east>15.075843280356741</east>
+            <south>47.25199367794615</south>
+            <west>5.858619159263028</west>
+        </rectangleBounds>
+        <pointsCalculation>
+            <maxTargetDistance>400</maxTargetDistance>
+            <exponentMultiplicator>1</exponentMultiplicator>
+        </pointsCalculation>
+    </region>
+</regions>
+
+<!--Template:
+
+
+    <region name="">
+        <shortCountryNames>
+	    <></>
+        </shortCountryNames>
+        <mapCenter>
+            <lat></lat>
+            <lng></lng>
+        </mapCenter>
+        <mapZoom></mapZoom>
+        <rectangleBounds>
+            <north></north>
+            <east></east>
+            <south></south>
+            <west></west>
+        </rectangleBounds>
+		<pointsCalculation>
+			<maxTargetDistance></maxTargetDistance>
+			<exponentMultiplicator></exponentMultiplicator>
+		</pointsCalculation>
+    </region>
+
+
+-->
