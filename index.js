@@ -201,13 +201,6 @@ async function newLocation()
 			
 			randomLat = getRandomLatBetween(southernBound, northernBound);
 			randomLng = getRandomLngBetween(westernBound, easternBound);
-
-			/*DELETE:
-			//Set currentCountry to short_name of randomly chosen country
-			currentCountry = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
-				.querySelector("shortCountryNames").children[randomCountry].textContent;
-			//console.log(currentCountry);
-			END DELETE*/
 			
 			//Set currentRegion to name attribute of randomly chosen region
 			currentRegion = xmlRegions.querySelectorAll('region[isSelected=Yes]')[randomRegion]
@@ -262,10 +255,10 @@ function processSVData(data, status)
 				for (let iResult = 0; iResult < results.length; iResult++) {		
 					if(results[iResult].address_components[0].types[0].includes("country")) {
 						//Compare reverse geocosding result to all countries in currentRegion
-						for (let iCountry = 0; iCountry < xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').childElementCount; iCountry++) {
-							if(results[iResult].address_components[0].short_name == xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').children[iCountry].textContent) {
+						for (let iCountry = 0; iCountry < xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('shortCountryNames').childElementCount; iCountry++) {
+							if(results[iResult].address_components[0].short_name == xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('shortCountryNames').children[iCountry].textContent) {
 								isCorrectCountry = true;
-								currentCountry = xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('shortCountryNames').children[iCountry].textContent;
+								currentCountry = xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('shortCountryNames').children[iCountry].textContent;
 							}
 						}
 						
@@ -282,13 +275,13 @@ function processSVData(data, status)
 				
 					//center map at position for currentRegion specified in XML file + set zoom as specified
 					var mapCenter = {
-						lat: parseFloat(xmlRegions.querySelector('region[name=' + currentRegion + ']')
+						lat: parseFloat(xmlRegions.querySelector('region[name="' + currentRegion + '"]')
 							.querySelector('mapCenter').querySelector('lat').textContent),
-						lng: parseFloat(xmlRegions.querySelector('region[name=' + currentRegion + ']')
+						lng: parseFloat(xmlRegions.querySelector('region[name="' + currentRegion + '"]')
 							.querySelector('mapCenter').querySelector('lng').textContent)
 					}
 					map.setCenter(mapCenter);
-					map.setZoom(parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']')
+					map.setZoom(parseInt(xmlRegions.querySelector('region[name="' + currentRegion + '"]')
 							.querySelector('mapZoom').textContent));
 					
 					//set guessMarker position to map center
@@ -522,8 +515,8 @@ function distMultiplier(iDistance) {
 		maxDistance = 8000000;
 		exponentMultiplicator = 1;
 	} else { //For regional game session
-		maxDistance = parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('maxTargetDistance').textContent) * 1000;
-		exponentMultiplicator = parseInt(xmlRegions.querySelector('region[name=' + currentRegion + ']').querySelector('exponentMultiplicator').textContent);
+		maxDistance = parseInt(xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('maxTargetDistance').textContent) * 1000;
+		exponentMultiplicator = parseInt(xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('exponentMultiplicator').textContent);
 	}
 	
 	if (iDistance <= minProximity) {
@@ -655,9 +648,9 @@ function selectRegions() {
 				//console.log(inputElement.getAttribute('name'));
 				
 				if (inputElement.checked) {
-					xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "Yes");
+					xmlRegions.querySelector('region[name="' + inputElement.getAttribute('name') + '"]').setAttribute("isSelected", "Yes");
 				} else {
-					xmlRegions.querySelector('region[name=' + inputElement.getAttribute('name') + ']').setAttribute("isSelected", "");
+					xmlRegions.querySelector('region[name="' + inputElement.getAttribute('name') + '"]').setAttribute("isSelected", "");
 				}
 			}
 		
