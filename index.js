@@ -16,15 +16,16 @@ Version:
 */
 
 var startTime, path, panorama, startLoc, currentLatLong, 
-	tempControlUI, mapClickListener, secondsGameDuration, gameDurationText;
+	tempControlUI, mapClickListener, secondsGameDuration, gameDurationText, distanceToTarget;
 let map, guessMarker, targetMarker, targetPath, replyText, xmlRegions;
 var panoServiceRadius = 100000;
 var currentCountry = "";
 var currentRegion = "";
 var hasSubmitted = Boolean(false);
 var pointsAchieved = +0;
-var distanceToTarget;
 var maxPoints = 1000;
+var geocodeCount = 0;
+var mapRequestCount = 0;
 
 const zeroPosition = { lat: 0, lng: 0 };
 
@@ -232,6 +233,9 @@ async function newLocation()
 		
 		var sv = new google.maps.StreetViewService();
         sv.getPanorama({location: {lat: randomLat, lng: randomLng}, preference: 'best', radius: panoServiceRadius, source: 'outdoor'}, processSVData);
+
+		//Increase number of map requests for current game session
+		mapRequestCount += 1;
         
 		//Set hasSubmitted = false to verify that the Submit button has not been clicked during current game instance
 		hasSubmitted = false;
@@ -249,6 +253,9 @@ function processSVData(data, status)
 			.geocode({ location: data.location.latLng })
 			.then((result) => {
 				const { results } = result;
+
+				//Increase number of geocoding requests for current game session
+				geocodeCount += 1;
 				
 				var isCorrectCountry = false;
 				
@@ -290,7 +297,7 @@ function processSVData(data, status)
 					//Set panorama to new location
 					panorama.setPano(data.location.pano);
         			startLoc = data.location.latLng;
-					
+										
 				} else { //If country is not coorect, generate new random location
 					//console.log("Wrong Country!");
 					newLocation();
@@ -316,6 +323,13 @@ function processSVData(data, status)
 			panorama.setPano(data.location.pano);
         	startLoc = data.location.latLng;
 		}
+
+		//Write geocoding + map request counters to sonsole & reset counters
+		console.log('Number of map requests: ' + mapRequestCount);
+		console.log('Number of geocoding requests: ' + geocodeCount);
+		mapRequestCount = 0;
+		geocodeCount = 0;
+		
     } else 
         newLocation();
 }
