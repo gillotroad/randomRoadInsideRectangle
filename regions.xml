@@ -105,6 +105,48 @@
 			<exponentMultiplicator>1</exponentMultiplicator>
 		</pointsCalculation>
     </region>
+	<region name="USA">
+        <shortCountryNames>
+            <United_States>US</United_States>
+        </shortCountryNames>
+        <mapCenter>
+            <lat>49.722474</lat>
+            <lng>-111.3632893,17z</lng>
+        </mapCenter>
+        <mapZoom>2</mapZoom>
+        <rectangleBounds>
+            <north>71.40722851955175</north>
+            <east>-66.7387217283249</east>
+            <south>25.008024804786228</south>
+            <west>-168.27680766582492</west>
+        </rectangleBounds>
+        <pointsCalculation>
+            <maxTargetDistance>1500</maxTargetDistance>
+            <exponentMultiplicator>1</exponentMultiplicator>
+        </pointsCalculation>
+    </region>
+	<region name="North America">
+        <shortCountryNames>
+	    	<Canada>CA</Canada>
+            <United_States>US</United_States>
+	    	<Mexico>MX</Mexico>
+        </shortCountryNames>
+        <mapCenter>
+            <lat>54.391503</lat>
+            <lng>-102.9040413,17z</lng>
+        </mapCenter>
+        <mapZoom>1</mapZoom>
+        <rectangleBounds>
+            <north>75.62400022817678</north>
+            <east>-52.456495165824904</east>
+            <south>14.394311433671348</south>
+            <west>-168.62837016582492</west>
+        </rectangleBounds>
+		<pointsCalculation>
+			<maxTargetDistance>1800</maxTargetDistance>
+			<exponentMultiplicator>1</exponentMultiplicator>
+		</pointsCalculation>
+    </region>
 </regions>
 <!--Template:
 
