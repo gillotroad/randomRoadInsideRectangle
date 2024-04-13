@@ -208,7 +208,7 @@ async function newLocation()
 			//console.log(currentRegion);
 			
 			//Set radius for StreetView Service to 3000 m
-			panoServiceRadius = 3000;
+			panoServiceRadius = 10000;
 		} else { //Generate worldwide random location
 			randomLat = getRandomLatLng(90);
 			randomLng = getRandomLatLng(180);
