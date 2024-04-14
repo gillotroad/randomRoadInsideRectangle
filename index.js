@@ -323,6 +323,8 @@ function processSVData(data, status)
 		
 		//Write game session + geocoding + map request counters to console & reset counters
 		if ((currentRegion.length == 0) || (isCorrectCountry == true)) {
+			sessionCount += 1;
+			
 			console.log ('---------------------------------------');
 			console.log ('Game session: #' + sessionCount);
 			console.log('Number of map requests: ' + mapRequestCount);
