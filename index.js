@@ -26,6 +26,7 @@ var pointsAchieved = +0;
 var maxPoints = 1000;
 var geocodeCount = 0;
 var mapRequestCount = 0;
+var sessionCount = 0;
 
 const zeroPosition = { lat: 0, lng: 0 };
 
@@ -226,10 +227,7 @@ async function newLocation()
 		
 		var sv = new google.maps.StreetViewService();
         sv.getPanorama({location: {lat: randomLat, lng: randomLng}, preference: 'best', radius: panoServiceRadius, source: 'outdoor'}, processSVData);
-
-		//Increase number of map requests for current game session
-		mapRequestCount += 1;
-        
+		        
 		//Set hasSubmitted = false to verify that the Submit button has not been clicked during current game instance
 		hasSubmitted = false;
     }
@@ -237,7 +235,12 @@ async function newLocation()
 
 function processSVData(data, status) 
 {
-    if (status === 'OK') { //Check for valid StreetView location
+    var isCorrectCountry = false;
+	
+	//Increase number of map requests for current game session
+	mapRequestCount += 1;
+	
+	if (status === 'OK') { //Check for valid StreetView location
         var geocoder = new google.maps.Geocoder();
 		
 		if(currentRegion.length > 0) {
@@ -246,15 +249,16 @@ function processSVData(data, status)
 			.geocode({ location: data.location.latLng })
 			.then((result) => {
 				const { results } = result;
-
+				
 				//Increase number of geocoding requests for current game session
 				geocodeCount += 1;
-				
-				var isCorrectCountry = false;
+
+				//DELETE:
+				//var isCorrectCountry = false;
 				
 				for (let iResult = 0; iResult < results.length; iResult++) {		
 					if(results[iResult].address_components[0].types[0].includes("country")) {
-						//Compare reverse geocosding result to all countries in currentRegion
+						//Compare reverse geocoding result to all countries in currentRegion
 						for (let iCountry = 0; iCountry < xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('shortCountryNames').childElementCount; iCountry++) {
 							if(results[iResult].address_components[0].short_name == xmlRegions.querySelector('region[name="' + currentRegion + '"]').querySelector('shortCountryNames').children[iCountry].textContent) {
 								isCorrectCountry = true;
@@ -316,15 +320,20 @@ function processSVData(data, status)
 			panorama.setPano(data.location.pano);
         	startLoc = data.location.latLng;
 		}
-
-		//Write geocoding + map request counters to sonsole & reset counters
-		console.log('Number of map requests: ' + mapRequestCount);
-		console.log('Number of geocoding requests: ' + geocodeCount);
-		mapRequestCount = 0;
-		geocodeCount = 0;
 		
-    } else 
+		//Write game session + geocoding + map request counters to console & reset counters
+		if ((currentRegion.length == 0) || (isCorrectCountry == true)) {
+			console.log ('---------------------------------------');
+			console.log ('Game session: #' + sessionCount);
+			console.log('Number of map requests: ' + mapRequestCount);
+			console.log('Number of geocoding requests: ' + geocodeCount);
+			mapRequestCount = 0;
+			geocodeCount = 0;
+		}
+		
+    } else {
         newLocation();
+	}
 }
 
 function getRandomLatLng(max) 
