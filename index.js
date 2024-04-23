@@ -27,6 +27,8 @@ var maxPoints = 1000;
 var geocodeCount = 0;
 var mapRequestCount = 0;
 var sessionCount = 0;
+var geocodeCountTotal = 0;
+var mapRequestCountTotal = 0;
 
 const zeroPosition = { lat: 0, lng: 0 };
 
@@ -294,11 +296,13 @@ function processSVData(data, status)
 					
 					//Write game session + geocoding + map request counters to console & reset counters
 					sessionCount += 1;
+					mapRequestCountTotal += mapRequestCount;
+					geocodeCountTotal += geocodeCount;
 					
 					console.log ('---------------------------------------');
 					console.log ('Game session: #' + sessionCount);
-					console.log('Number of map requests: ' + mapRequestCount);
-					console.log('Number of geocoding requests: ' + geocodeCount);
+					console.log('Map requests: current session = ' + mapRequestCount + ' / total = ' + mapRequestCountTotal);
+					console.log('Geocoding requests: current session = ' + geocodeCount + ' / total = ' + geocodeCountTotal);
 					mapRequestCount = 0;
 					geocodeCount = 0;
 					
@@ -329,11 +333,13 @@ function processSVData(data, status)
 
 			//Write game session + geocoding + map request counters to console & reset counters
 			sessionCount += 1;
+			mapRequestCountTotal += mapRequestCount;
+			geocodeCountTotal += geocodeCount;
 			
 			console.log ('---------------------------------------');
 			console.log ('Game session: #' + sessionCount);
-			console.log('Number of map requests: ' + mapRequestCount);
-			console.log('Number of geocoding requests: ' + geocodeCount);
+			console.log('Map requests: current session = ' + mapRequestCount + ' / total = ' + mapRequestCountTotal);
+			console.log('Geocoding requests: current session = ' + geocodeCount + ' / total = ' + geocodeCountTotal);
 			mapRequestCount = 0;
 			geocodeCount = 0;
 		}
