@@ -294,7 +294,17 @@ function processSVData(data, status)
 					//Set panorama to new location
 					panorama.setPano(data.location.pano);
         			startLoc = data.location.latLng;
-										
+					
+					//Write game session + geocoding + map request counters to console & reset counters
+					sessionCount += 1;
+					
+					console.log ('---------------------------------------');
+					console.log ('Game session: #' + sessionCount);
+					console.log('Number of map requests: ' + mapRequestCount);
+					console.log('Number of geocoding requests: ' + geocodeCount);
+					mapRequestCount = 0;
+					geocodeCount = 0;
+					
 				} else { //If country is not coorect, generate new random location
 					//console.log("Wrong Country!");
 					newLocation();
@@ -303,7 +313,7 @@ function processSVData(data, status)
 			.catch((e) => {
 				console.log("Geocode was not successful for the following reason: " + e);
 			});
-		} else {
+		} else { //If no region is selected -> worldwide game session
 			//Set click listener again for moving guessMarker
 			mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
   				moveMarker(event.latLng);
@@ -319,8 +329,19 @@ function processSVData(data, status)
 			//Set panorama to new location
 			panorama.setPano(data.location.pano);
         	startLoc = data.location.latLng;
+
+			//Write game session + geocoding + map request counters to console & reset counters
+			sessionCount += 1;
+			
+			console.log ('---------------------------------------');
+			console.log ('Game session: #' + sessionCount);
+			console.log('Number of map requests: ' + mapRequestCount);
+			console.log('Number of geocoding requests: ' + geocodeCount);
+			mapRequestCount = 0;
+			geocodeCount = 0;
 		}
-		
+
+		/*
 		//Write game session + geocoding + map request counters to console & reset counters
 		if ((currentRegion.length == 0) || (isCorrectCountry == true)) {
 			sessionCount += 1;
@@ -332,6 +353,7 @@ function processSVData(data, status)
 			mapRequestCount = 0;
 			geocodeCount = 0;
 		}
+  		*/
 		
     } else {
         newLocation();
