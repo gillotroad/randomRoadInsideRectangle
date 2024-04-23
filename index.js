@@ -240,11 +240,11 @@ function processSVData(data, status)
 	//Increase number of map requests for current game session
 	mapRequestCount += 1;
 	
-	if (status === 'OK') { //Check for valid StreetView location
-        var geocoder = new google.maps.Geocoder();
-		
-		if(currentRegion.length > 0) {
+	if (status === 'OK') { //Check for valid StreetView location		
+		if(currentRegion.length > 0) { //Check if any region has been chosen
 			//Reverse geocoding request to retrieve country information for chosen panorama location
+			var geocoder = new google.maps.Geocoder();
+			
 			geocoder
 			.geocode({ location: data.location.latLng })
 			.then((result) => {
@@ -252,9 +252,6 @@ function processSVData(data, status)
 				
 				//Increase number of geocoding requests for current game session
 				geocodeCount += 1;
-
-				//DELETE:
-				//var isCorrectCountry = false;
 				
 				for (let iResult = 0; iResult < results.length; iResult++) {		
 					if(results[iResult].address_components[0].types[0].includes("country")) {
@@ -313,7 +310,7 @@ function processSVData(data, status)
 			.catch((e) => {
 				console.log("Geocode was not successful for the following reason: " + e);
 			});
-		} else { //If no region is selected -> worldwide game session
+		} else { //If no region has been chosen -> worldwide game session
 			//Set click listener again for moving guessMarker
 			mapClickListener = google.maps.event.addListener(map, 'click', function(event) {
   				moveMarker(event.latLng);
